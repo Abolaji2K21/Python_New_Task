@@ -6,7 +6,7 @@ class MyTestCase(unittest.TestCase):
 
     def test_that_we_can_get_list_length(self):
         protoType = [1, 4, 5, 7, 7, 8, 8, 9, 9, 0]
-        self.assertEqual(10,task_One.calculate_length(protoType))
+        self.assertEqual(10, task_One.calculate_length(protoType))
 
     def test_that_we_can_sum_at_even_position(self):
         protoType = [1, 4, 5, 7, 7, 8, 8, 9, 9, 0]
