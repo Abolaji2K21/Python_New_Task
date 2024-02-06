@@ -1,9 +1,6 @@
-class PhoneBook_s:
+class PhoneBook:
     userChoice = 0
-    name = ""
-    #input = None
-    contactName = []
-    contactNumber = []
+    contacts = {}
 
     def __init__(self):
         self.input = input
@@ -39,7 +36,8 @@ class PhoneBook_s:
                     print("Searching  >>>>>>>>>>>>>>>>>>>>>>>>>>>")
                     print("Whoops!!! Contact not found.")
             elif self.userChoice == 4:
-                if self.deleteEntry():
+                name = input("Enter contact name to delete: ")
+                if self.deleteEntry(name):
                     print("Loading >>>>>>>>>>>>>>>>>>>>>>>>>>>")
                     print("Contact deleted successfully.")
                 else:
@@ -70,30 +68,28 @@ class PhoneBook_s:
         return int(input("Enter Your Entry here (1, 2, 3, 4 or 5): "))
 
     def deleteEntry(self, name):
-        #name = input("Enter contact name to delete: ")
-        index = self.contactName.index(name) if name in self.contactName else -1
-        if index != -1:
-            del self.contactName[index]
-            del self.contactNumber[index]
+        if name in self.contacts:
+            del self.contacts[name]
+            return True
+        return False
 
     def checkEntry(self, name):
-       # name = input("Enter contact name to check: ")
-        return name in self.contactName
-
+        return name in self.contacts
 
     def displayContacts(self):
         print("Existing Contacts:")
-        if self.contactName:
-            for index in range(len(self.contactName)):
-                print("Name: ", self.contactName[index])
-                print()
-                print("Number: ", self.contactNumber[index])
-
+        if self.contacts:
+            for name, number in self.contacts.items():
+                print("Name: ", name)
+                print("Number: ", number)
+            return True
+        return False
 
     def create_contact(self, name, num):
-        self.contactName.append(name)
-        self.contactNumber.append(num)
+        if name not in self.contacts:
+            self.contacts[name] = num
+            return True
+        return False
 
-#phone_book = PhoneBook_s()
-#phone_book.main()
-
+# phone_book = PhoneBook()
+# phone_book.main()
