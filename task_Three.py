@@ -23,6 +23,7 @@ def add_every_third_element(numbers):
             total += num
         count += 1
     return total
+    #return sum(numbers[1::3])
 
 
 def add_the_first_middle_last(numbers):
