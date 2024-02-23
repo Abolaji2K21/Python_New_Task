@@ -8,6 +8,7 @@ class MyTestCase(unittest.TestCase):
     def setUp(self):
         self.my_gun = PistolGun("9mm", 20)
 
+
     def tearDown(self):
         self.my_gun = None
 
