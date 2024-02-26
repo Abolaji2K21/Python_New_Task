@@ -34,6 +34,7 @@ class TestAccount(unittest.TestCase):
         self.assertEqual(0, my_account.get_balance("2458"))
         with self.assertRaises(InvalidAmountException):
             my_account.withdraw(-20_000, "2458")
+        self.assertRaises(InvalidAmountException, my_account.withdraw, -20_000, "2458")
 
     def test_withdraw_positive_amount_balance_changes(self):
         my_account = Account(123456768, "2458")
