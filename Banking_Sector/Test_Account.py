@@ -36,6 +36,14 @@ class TestAccount(unittest.TestCase):
             my_account.withdraw(-20_000, "2458")
         self.assertRaises(InvalidAmountException, my_account.withdraw, -20_000, "2458")
 
+    def test_withdraw_amount_with_wrong_pin_balance_remain_unchanged(self):
+        my_account = Account(123456768, "2458")
+        self.assertEqual(0, my_account.get_balance("2458"))
+        my_account.deposit(2_000)
+        my_account.deposit(4_000)
+        self.assertEqual(6_000, my_account.get_balance("2458"))
+        self.assertRaises(InvalidPinException, my_account.withdraw, 20_000, "4258")
+
     def test_withdraw_positive_amount_balance_changes(self):
         my_account = Account(123456768, "2458")
         self.assertEqual(0, my_account.get_balance("2458"))

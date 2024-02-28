@@ -14,7 +14,7 @@ class Bank:
 
     def find_account(self, account_number):
         for account in self.accounts:
-            if account.get_account_number() == account_number:
+            if account.account_number == account_number:
                 return account
         return None
 
@@ -54,8 +54,8 @@ class Bank:
     def register_customer(self, first_name, last_name, pin):
         account_number = generate_account_number()
         my_account = Account(account_number, pin)
-        my_account.set_first_name(first_name)
-        my_account.set_last_name(last_name)
+        my_account.first_name = first_name
+        my_account.last_name = last_name
 
         self.accounts.append(my_account)
         return my_account

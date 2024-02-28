@@ -13,10 +13,10 @@ class InsufficientFundsException(Exception):
 class Account:
     def __init__(self, accountable, pin):
         self.balance = 0
-        self.accountnumber = accountable
+        self._account_number = accountable
         self.pin = pin
-        self.firstName = ""
-        self.lastName = ""
+        self._first_name = ""
+        self._last_name = ""
 
     def validate_pin(self, key):
         return self.pin == key
@@ -39,20 +39,30 @@ class Account:
             raise InsufficientFundsException("Insufficient funds")
         self.balance -= amount
 
-    def get_account_number(self):
-        return self.accountnumber
+    @property
+    def account_number(self):
+        return self._account_number
 
-    def set_first_name(self, first_name):
-        self.firstName = first_name
+    @account_number.setter
+    def account_number(self, value):
+        self._account_number = value
 
-    def set_last_name(self, last_name):
-        self.lastName = last_name
+    @property
+    def first_name(self):
+        return self._first_name
 
-    def get_first_name(self):
-        return self.firstName
+    @first_name.setter
+    def first_name(self, value):
+        self._first_name = value
 
-    def get_last_name(self):
-        return self.lastName
+    @property
+    def last_name(self):
+        return self._last_name
 
-    def get_full_name(self):
-        return f"{self.firstName} {self.lastName}"
+    @last_name.setter
+    def last_name(self, value):
+        self._last_name = value
+
+    def full_name(self):
+        return f"{self._first_name} {self._last_name}"
+

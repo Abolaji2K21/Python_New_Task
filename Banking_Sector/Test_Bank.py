@@ -17,7 +17,7 @@ class TestBank(unittest.TestCase):
         bank = Bank("Bee_jayBank")
         my_account = bank.register_customer("Am", "Tired", "1234")
 
-        self.assertEqual("Am Tired", my_account.get_full_name())
+        self.assertEqual("Am Tired", my_account.full_name())
 
     def test_that_after_registration_you_can_delete_an_account(self):
         bank = Bank("Bee_jayBank")
@@ -25,7 +25,7 @@ class TestBank(unittest.TestCase):
         my_account1 = bank.register_customer("Am", "Frustrated", "4321")
         my_account2 = bank.register_customer("Am", "Angry", "2356")
 
-        bank.remove_account(my_account1.get_account_number(), "4321")
+        bank.remove_account(my_account1.account_number, "4321")
 
         self.assertEqual(2, len(bank.get_accounts()))
 
@@ -35,8 +35,8 @@ class TestBank(unittest.TestCase):
         my_account1 = bank.register_customer("Am", "Frustrated", "4321")
         my_account2 = bank.register_customer("Am", "Angry", "2356")
 
-        bank.remove_account(my_account1.get_account_number(), "4321")
-        bank.remove_account(my_account.get_account_number(), "1234")
+        bank.remove_account(my_account1.account_number, "4321")
+        bank.remove_account(my_account.account_number, "1234")
 
         self.assertEqual(1, len(bank.get_accounts()))
 
@@ -44,13 +44,13 @@ class TestBank(unittest.TestCase):
         bank = Bank("Bee_jayBank")
         my_account = bank.register_customer("Am", "Tired", "1234")
 
-        bank.remove_account(my_account.get_account_number(), "1345")
+        bank.remove_account(my_account.account_number, "1345")
         self.assertEqual(1, len(bank.get_accounts()))
 
     def test_that_you_can_deposit(self):
         bank = Bank("Bee_jayBank")
         my_account = bank.register_customer("Am", "Tired", "1234")
-        account_number = my_account.get_account_number()
+        account_number = my_account.account_number
 
         bank.deposit(1000, account_number)
         self.assertEqual(1000, my_account.get_balance("1234"))
@@ -58,7 +58,7 @@ class TestBank(unittest.TestCase):
     def test_that_you_can_deposit_twice(self):
         bank = Bank("Bee_jayBank")
         my_account = bank.register_customer("Am", "Tired", "1234")
-        account_number = my_account.get_account_number()
+        account_number = my_account.account_number
 
         bank.deposit(1000, account_number)
         bank.deposit(1000, account_number)
@@ -67,7 +67,7 @@ class TestBank(unittest.TestCase):
     def test_that_you_can_not_deposit_if_your_pin_is_wrong(self):
         bank = Bank("Bee_jayBank")
         my_account = bank.register_customer("Am", "Tired", "1234")
-        account_number = my_account.get_account_number()
+        account_number = my_account.account_number
 
         bank.deposit(1000, account_number)
         bank.deposit(1000, account_number)
