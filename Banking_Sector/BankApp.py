@@ -1,13 +1,15 @@
 # from Bank import Bank
 #
-# bank = Bank("Bee_Jays Bank")
 #
+# class BankApp:
+#     def __init__(self):
+#         self.bank = Bank("Okay_Bank")
 #
-# def display():
-#     print("""Welcome to Bee_Jays Bank App
-#     1. Create Account
-#     2. Close Account
-#     3. Deposit
+#     def display(self):
+#         print("""Welcome to Bee_Jays Bank App
+#         1. Create Account
+#         2. Close Account
+#         3. Deposit
 #     4. Transfer
 #     5. Withdraw
 #     6. Check balance
