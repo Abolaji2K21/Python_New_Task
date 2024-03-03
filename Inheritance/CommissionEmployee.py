@@ -50,4 +50,3 @@ class CommissionEmployee:
 
 broke = CommissionEmployee("abbey", "hanna", "419", 50000, 5.0)
 print(broke)
-
