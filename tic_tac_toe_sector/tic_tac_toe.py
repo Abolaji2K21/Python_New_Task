@@ -18,7 +18,7 @@ class TicTacTac:
     def is_draw(self) -> bool:
         return self.draw
 
-    def get_player(self) -> User:
+    def get_player(self) -> list:
         return self.players
 
     def get_score_board(self) -> list:
@@ -53,11 +53,32 @@ class TicTacTac:
 
     def check_draw(self) -> bool:
         for row in range(3):
-            for cell in row:
+            for cell in self.score_board[row]:
                 if cell == GameType.EMPTY:
                     return False
         return True
 
+    def make_move(self, row, column) -> bool:
+        pass
 
+    def is_cell_valid(self, row, column) -> bool:
+        return self.score_board[row][column] != GameType.EMPTY
 
+    def mark_cell(self, row, column, player) -> bool:
+        self.score_board[row][column] = player
+        return True
 
+    def update_game_state(self):
+        if self.check_win():
+            self.winner = self.current_player
+        elif self.check_draw():
+            self.draw = True
+
+    def switch_player(self):
+        if self.current_player == self.players[0]:
+            self.current_player = self.players[1]
+        else:
+            self.current_player = self.players[0]
+
+    def is_game_over(self):
+        return self.winner is not None or self.check_draw()
