@@ -1,61 +1,67 @@
+
+from Exception.invalid_pin_exception import InvalidPinException
 from User_Diary_Sector.Entry import Entry
 
 
-class InvalidPinException(Exception):
-    pass
-
-
 class Diary:
-    def __init__(self, username, password):
+    def __init__(self, username: str, password: str):
         if not username:
-            raise ValueError("You need a username to create a diary")
+            raise ValueError("Username cannot be empty.")
         if not password:
-            raise ValueError("You need a password to create a diary")
-
+            raise ValueError("Password cannot be empty.")
         self.username = username
         self.password = password
-        self.is_locked = True
         self.entries = []
+        self.locked = True
 
-    def get_number_of_entries(self):
+    def get_username(self) -> str:
+        return self.username
+
+    def get_password(self) -> str:
+        return self.password
+
+    def is_locked(self) -> bool:
+        return self.locked
+
+    def get_number_of_entries(self) -> int:
         return len(self.entries)
 
-    def unlock_diary(self, password):
-        if self.password == password:
-            self.is_locked = False
-        else:
-            raise InvalidPinException("Wrong Password kindly enter a new one")
+    def lock_diary(self, password: str) -> None:
+        if self.password != password:
+            raise ValueError("Incorrect password.")
+        self.locked = True
 
-    def lock_diary(self):
-        self.password = None
-        self.is_locked = True
+    def unlock_diary(self, password: str) -> None:
+        if self.password != password:
+            raise InvalidPinException("Incorrect password.")
+        self.locked = False
 
-    def is_locked(self):
-        return self.is_locked
-
-    def create_entry(self, entry_id, title, body):
+    def create_entry(self, entry_id: int, title: str, body: str) -> None:
+        if self.locked:
+            raise ValueError("Diary is locked. Cannot add entry.")
         new_entry = Entry(entry_id, title, body)
         self.entries.append(new_entry)
 
-    def delete_entry(self, entry_id):
-        self.entries = [entry for entry in self.entries if entry.id != entry_id]
-
-    def find_entry_by_id(self, entry_id):
+    def find_entry_by_id(self, entry_id: int) -> Entry:
+        if self.locked:
+            raise ValueError("Diary is locked. Cannot search for entry.")
         for entry in self.entries:
-            if entry.id == entry_id:
+            if entry.get_id() == entry_id:
                 return entry
-        return None
+        raise ValueError(f"Entry with id {entry_id} not found.")
 
-    def update_entry(self, entry_id, title, body):
-        for entry in self.entries:
-            if entry.id == entry_id:
-                entry.title = title
-                entry.body = body
+    def delete_entry(self, entry_id: int) -> None:
+        if self.locked:
+            raise ValueError("Diary is locked. Cannot delete entry.")
+        for entry_id, entry in enumerate(self.entries):
+            if entry.get_id() == entry_id:
+                del self.entries[entry_id]
                 return
-        raise ValueError("Entry ID Not Found")
+        raise ValueError(f"Entry with id {entry_id} not found.")
 
-    def get_username(self):
-        return self.username
-
-    def get_password(self):
-        return self.password
+    def update_entry(self, entry_id: int, title: str, body: str) -> None:
+        if self.locked:
+            raise ValueError("Diary is locked. Cannot update entry.")
+        entry_to_update = self.find_entry_by_id(entry_id)
+        entry_to_update.set_title(title)
+        entry_to_update.set_body(body)

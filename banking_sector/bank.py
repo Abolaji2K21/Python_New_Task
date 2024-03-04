@@ -1,4 +1,4 @@
-from Banking_Sector.account_One import Account
+from banking_sector.account_One import Account
 from Exception.account_not_found_exception import AccountNotFoundException
 from Exception.insufficient_funds_exception import InsufficientFundsException
 from Exception.invalid_amount_exception import InvalidAmountException
@@ -8,12 +8,11 @@ from Exception.invalid_pin_exception import InvalidPinException
 class Bank:
     def __init__(self, name):
         self.name = name
-        self.counter = 1000
         self.accounts = []
 
     def find_account(self, account_number):
         for my_account in self.accounts:
-            if my_account.account_number == account_number:
+            if my_account.account_number() == account_number:
                 return my_account
         raise AccountNotFoundException("Account not found")
 

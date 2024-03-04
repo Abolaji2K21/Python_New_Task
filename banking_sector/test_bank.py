@@ -1,5 +1,5 @@
 import unittest
-from Banking_Sector.bank import Bank
+from banking_sector.bank import Bank
 from Exception.account_not_found_exception import AccountNotFoundException
 from Exception.invalid_pin_exception import InvalidPinException
 

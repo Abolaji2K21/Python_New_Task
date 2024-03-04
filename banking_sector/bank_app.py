@@ -1,4 +1,4 @@
-from Banking_Sector.bank import Bank
+from banking_sector.bank import Bank
 from Exception.account_not_found_exception import AccountNotFoundException
 from Exception.insufficient_funds_exception import InsufficientFundsException
 from Exception.invalid_amount_exception import InvalidAmountException

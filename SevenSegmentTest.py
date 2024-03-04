@@ -1,20 +1,14 @@
 import unittest
-from Seven_Segment import SevenSegment
+from Seven_Segment import SevenSegment, display_seven_segment_of
 
 
 class TestSevenSegment(unittest.TestCase):
 
-    def test_display_segment_zero(self):
-        segment = SevenSegment()
-        expected_pattern = """
-        # # # #
-        #     #
-        #     #
-        #     #
-        # # # #
-    """
-        self.assertEqual(expected_pattern, segment.display_segment("11111101"))
-        self.assertFalse(segment.is_on)
+    def test_display_seven_segment_of(self):
+        assert display_seven_segment_of("11111111") == \
+               " # # # # #\n#         #\n # # # # #\n#         #\n # # # # #\n"
+        # self.assertEqual(expected_pattern, segment.display_segment("11111101"))
+        # self.assertFalse(segment.is_on)
 
     def test_invalid_digit(self):
         segment = SevenSegment()
@@ -36,4 +30,5 @@ class TestSevenSegment(unittest.TestCase):
         mySegment.display_segment("11100000")
         self.assertFalse(mySegment.is_on)
 
-# unittest.main()
+
+unittest.main()

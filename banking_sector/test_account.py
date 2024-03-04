@@ -1,6 +1,6 @@
 import unittest
 
-from Banking_Sector.account_One import Account
+from banking_sector.account_One import Account
 from Exception.insufficient_funds_exception import InsufficientFundsException
 from Exception.invalid_amount_exception import InvalidAmountException
 
