@@ -102,5 +102,3 @@ print(c1)
 # d)/h] following are the fixed values of c and h: c is 50. h is 30 . d is the variable whose values should be input
 # to your program in a comma- seperated sequence sample input : 100,150,180 sample output: 18 , 22, 24
 
-
-
