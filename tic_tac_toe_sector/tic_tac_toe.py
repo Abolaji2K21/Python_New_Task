@@ -18,7 +18,7 @@ class TicTacTac:
     def is_draw(self) -> bool:
         return self.draw
 
-    def get_player(self) -> list:
+    def get_players(self) -> list:
         return self.players
 
     def get_score_board(self) -> list:
