@@ -9,7 +9,7 @@ class DiaryApp:
 
     def main_menu(self) -> None:
         self.welcome()
-        display = """
+        print("""
             1 --> Create Diary
             2 --> Lock Diary
             3 --> Unlock Diary
@@ -18,9 +18,9 @@ class DiaryApp:
             6 --> Update Entry
             7 --> Delete Entry
             8 --> Exit App
-        """
-        print("Kindly enter any choice from the above below:")
-        choice = input(f"still waiting :  {display}")
+        """)
+        print("Kindly enter any choice from the above:")
+        choice = input(f"still waiting :")
         if choice:
             self.handle_choice(choice)
 
