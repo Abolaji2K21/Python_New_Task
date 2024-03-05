@@ -1,5 +1,8 @@
 import unittest
-from User_Diary_Sector import Diary
+
+from Exception.invalid_pin_exception import InvalidPinException
+from User_Diary_Sector import diary
+from User_Diary_Sector.diary import Diary
 
 
 class DiaryTest(unittest.TestCase):
@@ -59,7 +62,7 @@ class DiaryTest(unittest.TestCase):
         body = "Hello and how you doing today ? i am documenting my findings because i need to start thinking "
 
         my_diary.create_entry(id, title, body)
-        self.assertEqual(1, my_diary.get_number_of_entry())
+        self.assertEqual(1, my_diary.get_number_of_entries())
 
     def test_find_entry_by_id_feature(self):
         username = "Bee jay"
@@ -75,22 +78,22 @@ class DiaryTest(unittest.TestCase):
         body1 = "Hello and how you doing today? I am documenting my findings because I need to start thinking."
 
         my_diary.create_entry(id1, title1, body1)
-        self.assertEqual(1, my_diary.get_number_of_entry())
+        self.assertEqual(1, my_diary.get_number_of_entries())
 
         id2 = 2
         title2 = "How To Stop Thinking"
         body2 = "Hello and how you doing today? I am documenting my findings because I need to stop thinking."
 
         my_diary.create_entry(id2, title2, body2)
-        self.assertEqual(2, my_diary.get_number_of_entry())
+        self.assertEqual(2, my_diary.get_number_of_entries())
 
         found_entry1 = my_diary.find_entry_by_id(1)
         self.assertIsNotNone(found_entry1)
-        self.assertEqual(1, found_entry1.id)
+        self.assertEqual(1, found_entry1.entry_id)
 
         found_entry2 = my_diary.find_entry_by_id(2)
         self.assertIsNotNone(found_entry2)
-        self.assertEqual(2, found_entry2.id)
+        self.assertEqual(2, found_entry2.entry_id)
 
     def test_that_remove_entry_by_id_feature_works(self):
         username = "Bee jay"
@@ -106,28 +109,28 @@ class DiaryTest(unittest.TestCase):
         body = "Hello and how you doing today ? i am documenting my findings because i need to start thinking "
 
         my_diary.create_entry(id, title, body)
-        self.assertEqual(1, my_diary.get_number_of_entry())
+        self.assertEqual(1, my_diary.get_number_of_entries())
 
         id1 = 2
         title1 = "How To Stop Thinking"
         body1 = "Hello and how you doing today ? i am documenting my findings because i need to stop thinking "
 
         my_diary.create_entry(id1, title1, body1)
-        self.assertEqual(2, my_diary.get_number_of_entry())
+        self.assertEqual(2, my_diary.get_number_of_entries())
 
         found_entry = my_diary.find_entry_by_id(2)
-        self.assertEqual(2, found_entry.id)
+        self.assertEqual(2, found_entry.entry_id)
         self.assertIsNotNone(my_diary.find_entry_by_id(2))
 
         found_entry1 = my_diary.find_entry_by_id(1)
-        self.assertEqual(1, found_entry1.id)
+        self.assertEqual(1, found_entry1.entry_id)
         self.assertIsNotNone(my_diary.find_entry_by_id(1))
 
         my_diary.delete_entry(2)
-        self.assertEqual(1, my_diary.get_number_of_entry())
+        self.assertEqual(1, my_diary.get_number_of_entries())
 
         my_diary.delete_entry(1)
-        self.assertEqual(0, my_diary.get_number_of_entry())
+        self.assertEqual(0, my_diary.get_number_of_entries())
 
     def test_that_update_entry_by_id_feature_works(self):
         username = "Bee jay"
@@ -143,21 +146,21 @@ class DiaryTest(unittest.TestCase):
         body = "Hello and how you doing today ? i am documenting my findings because i need to start thinking "
 
         my_diary.create_entry(id, title, body)
-        self.assertEqual(1, my_diary.get_number_of_entry())
+        self.assertEqual(1, my_diary.get_number_of_entries())
 
         id1 = 2
         title1 = "How To Stop Thinking"
         body1 = "Hello and how you doing today ? i am documenting my findings because i need to stop thinking "
 
         my_diary.create_entry(id1, title1, body1)
-        self.assertEqual(2, my_diary.get_number_of_entry())
+        self.assertEqual(2, my_diary.get_number_of_entries())
 
         found_entry = my_diary.find_entry_by_id(2)
-        self.assertEqual(2, found_entry.id)
+        self.assertEqual(2, found_entry.entry_id)
         self.assertIsNotNone(my_diary.find_entry_by_id(2))
 
         found_entry1 = my_diary.find_entry_by_id(1)
-        self.assertEqual(1, found_entry1.id)
+        self.assertEqual(1, found_entry1.entry_id)
         self.assertIsNotNone(my_diary.find_entry_by_id(1))
 
         new_title = "NewTitle"
@@ -185,26 +188,26 @@ class DiaryTest(unittest.TestCase):
         my_diary.unlock_diary("password@")
         self.assertFalse(my_diary.is_locked())
 
-        id = 1
+        id5 = 1
         title = "How To Start Thinking"
         body = "Hello and how you doing today ? i am documenting my findings because i need to start thinking "
 
-        my_diary.create_entry(id, title, body)
-        self.assertEqual(1, my_diary.get_number_of_entry())
+        my_diary.create_entry(id5, title, body)
+        self.assertEqual(1, my_diary.get_number_of_entries())
 
         id1 = 2
         title1 = "How To Stop Thinking"
         body1 = "Hello and how you doing today ? i am documenting my findings because i need to stop thinking "
 
         my_diary.create_entry(id1, title1, body1)
-        self.assertEqual(2, my_diary.get_number_of_entry())
+        self.assertEqual(2, my_diary.get_number_of_entries())
 
         found_entry = my_diary.find_entry_by_id(2)
-        self.assertEqual(2, found_entry.id)
+        self.assertEqual(2, found_entry.entry_id)
         self.assertIsNotNone(my_diary.find_entry_by_id(2))
 
         found_entry1 = my_diary.find_entry_by_id(1)
-        self.assertEqual(1, found_entry1.id)
+        self.assertEqual(1, found_entry1.entry_id)
         self.assertIsNotNone(my_diary.find_entry_by_id(1))
 
         new_title = "NewTitle"
@@ -225,5 +228,33 @@ class DiaryTest(unittest.TestCase):
 
         fake_title = "NewTitle"
         fake_body = "NewBody"
-        with self.assertRaises(KeyError):
+        with self.assertRaises(ValueError):
             my_diary.update_entry(3, fake_title, fake_body)
+
+    def test_that_locked_diary_cannot_add_entries(self):
+        username = "Bee jay"
+        password = "password@"
+
+        my_diary = Diary(username, password)
+        with self.assertRaises(ValueError):
+            my_diary.create_entry(1, "Title", "Body")
+
+    def test_that_locked_diary_cannot_delete_entries(self):
+        username = "Bee jay"
+        password = "password@"
+
+        my_diary = Diary(username, password)
+        my_diary.unlock_diary("password@")
+        my_diary.create_entry(1, "Title", "Body")
+        my_diary.lock_diary("password@")
+        with self.assertRaises(ValueError):
+            my_diary.delete_entry(1)
+
+    def test_that_non_existing_entry_cannot_be_deleted(self):
+        username = "Bee jay"
+        password = "password@"
+
+        my_diary = Diary(username, password)
+        my_diary.unlock_diary("password@")
+        with self.assertRaises(ValueError):
+            my_diary.delete_entry(1)

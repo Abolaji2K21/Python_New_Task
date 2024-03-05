@@ -1,6 +1,6 @@
 
 from Exception.invalid_pin_exception import InvalidPinException
-from User_Diary_Sector.Entry import Entry
+from User_Diary_Sector.entry import Entry
 
 
 class Diary:
@@ -53,9 +53,9 @@ class Diary:
     def delete_entry(self, entry_id: int) -> None:
         if self.locked:
             raise ValueError("Diary is locked. Cannot delete entry.")
-        for entry_id, entry in enumerate(self.entries):
+        for entry in self.entries:
             if entry.get_id() == entry_id:
-                del self.entries[entry_id]
+                self.entries.remove(entry)
                 return
         raise ValueError(f"Entry with id {entry_id} not found.")
 
