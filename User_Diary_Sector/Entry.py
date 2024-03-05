@@ -23,5 +23,3 @@ class Entry:
     def set_body(self, body):
         self.body = body
 
-    def get_date_created(self):
-        return self.date_created

@@ -2,7 +2,6 @@ import unittest
 from User_Diary_Sector import Diary
 
 
-
 class DiaryTest(unittest.TestCase):
 
     def test_that_i_can_create_a_diary(self):
