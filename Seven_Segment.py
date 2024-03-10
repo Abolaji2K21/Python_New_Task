@@ -55,47 +55,47 @@
 # # if __name__ == "__main__":
 # #     main()
 #
-#
-#     def display_seven_segment_of(binary_number):
-#         check_input(binary_number)
-#         return display_segment(binary_number)
-#
-#
-#     def display_segment(binary_number):
-#         bool_list = convert_input_to_boolean_list(binary_number)
-#         horizontal = display_horizontal(bool_list[0])
-#         vertical = display_vertical(bool_list[5], bool_list[1])
-#         horizontal += display_horizontal(bool_list[6])
-#         vertical += display_vertical(bool_list[4], bool_list[2])
-#         horizontal += display_horizontal(bool_list[3])
-#         return horizontal + '\n' + vertical
-#
-#
-#     def check_input(user_input: str):
-#         if len(user_input) != 8:
-#             raise ValueError("Binary number must be 8 digits long")
-#         if not all(char in '01' for char in user_input):
-#             raise ValueError("Binary number must contain only 0's and 1's")
-#
-#
-#     def display_horizontal(condition: bool):
-#         return " # # # # #\n" if condition else ""
-#
-#
-#     def display_vertical(condition1: bool, condition2: bool):
-#         lines = []
-#         if condition1 and condition2:
-#             for _ in range(4):
-#                 lines.append("#         #\n") 
-#         elif condition1 and not condition2:
-#             for _ in range(4):
-#                 lines.append("#         \n")
-#         elif not condition1 and condition2:
-#             for _ in range(4):
-#                 lines.append("         #\n")
-#         return ''.join(lines)
+
+    def display_seven_segment_of(binary_number):
+        check_input(binary_number)
+        return display_segment(binary_number)
+
+
+    def display_segment(binary_number):
+        bool_list = convert_input_to_boolean_list(binary_number)
+        horizontal = display_horizontal(bool_list[0])
+        vertical = display_vertical(bool_list[5], bool_list[1])
+        horizontal += display_horizontal(bool_list[6])
+        vertical += display_vertical(bool_list[4], bool_list[2])
+        horizontal += display_horizontal(bool_list[3])
+        return horizontal + '\n' + vertical
+
+
+    def check_input(user_input: str):
+        if len(user_input) != 8:
+            raise ValueError("Binary number must be 8 digits long")
+        if not all(char in '01' for char in user_input):
+            raise ValueError("Binary number must contain only 0's and 1's")
+
+
+    def display_horizontal(condition: bool):
+        return " # # # # #\n" if condition else ""
 #
 #
-#     def convert_input_to_boolean_list(binary_number: str) -> list:
-#         return [char == '1' for char in binary_number]
-#
+    def display_vertical(condition1: bool, condition2: bool):
+        lines = []
+        if condition1 and condition2:
+            for _ in range(4):
+                lines.append("#         #\n")
+        elif condition1 and not condition2:
+            for _ in range(4):
+                lines.append("#         \n")
+        elif not condition1 and condition2:
+            for _ in range(4):
+                lines.append("         #\n")
+        return ''.join(lines)
+
+
+    def convert_input_to_boolean_list(binary_number: str) -> list:
+        return [char == '1' for char in binary_number]
+
