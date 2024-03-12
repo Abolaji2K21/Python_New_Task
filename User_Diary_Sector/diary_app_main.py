@@ -20,7 +20,7 @@ class DiaryApp:
             8 --> Exit App
         """)
         print("Kindly enter any choice from the above:")
-        choice = input(f"still waiting :")
+        choice = input("still waiting :")
         if choice:
             self.handle_choice(choice)
 
@@ -130,7 +130,7 @@ class DiaryApp:
     @staticmethod
     def welcome() -> None:
         print("Welcome To AppByMeDiary\n")
-        print("The next page Displays, Shows And Help You With Your Choice ?\n")
+        print("The next page Displays And Help You With Your Choice ?\n")
 
 
 if __name__ == "__main__":

@@ -1,5 +1,5 @@
 from Exception.cell_occupied_exception import CellOccupiedException
-from tic_tac_toe_sector.gametype import GameType
+from tic_tac_toe_sector.game_type import GameType
 from tic_tac_toe_sector.user import User
 
 
@@ -13,32 +13,32 @@ class TicTacTac:
         self.winner = None
         self.draw = False
 
-    def get_winner(self) -> User:
+    def get_winner(self):
         return self.winner
 
-    def is_draw(self) -> bool:
+    def is_draw(self):
         return self.draw
 
-    def get_players(self) -> list:
+    def get_players(self):
         return self.players
 
-    def get_score_board(self) -> list:
+    def get_score_board(self):
         return self.score_board
 
     def get_current_player(self):
         return self.current_player
 
-    def check_win(self) -> bool:
+    def check_win(self):
         for row in range(3):
-            if (self.score_board[row][0] == self.current_player.get_game_type and
-                    self.score_board[row][1] == self.current_player.get_game_type and
-                    self.score_board[row][2] == self.current_player.get_game_type):
+            if (self.score_board[row][0] == self.current_player.get_game_type() and
+                    self.score_board[row][1] == self.current_player.get_game_type() and
+                    self.score_board[row][2] == self.current_player.get_game_type()):
                 return True
 
         for column in range(3):
-            if (self.score_board[0][column] == self.current_player.get_game_type and
-                    self.score_board[1][column] == self.current_player.get_game_type and
-                    self.score_board[2][column] == self.current_player.get_game_type):
+            if (self.score_board[0][column] == self.current_player.get_game_type() and
+                    self.score_board[1][column] == self.current_player.get_game_type() and
+                    self.score_board[2][column] == self.current_player.get_game_type()):
                 return True
 
         if (self.score_board[0][0] == self.current_player.get_game_type() and
@@ -52,14 +52,14 @@ class TicTacTac:
             return True
         return False
 
-    def check_draw(self) -> bool:
+    def check_draw(self):
         for row in range(3):
             for cell in self.score_board[row]:
                 if cell == GameType.EMPTY:
                     return False
         return True
 
-    def make_move(self, row, column) -> None:
+    def make_move(self, row, column):
         if self.is_cell_valid(row, column):
             raise CellOccupiedException("Cell at row or column is already occupied")
         elif row < 0 or column < 0:
@@ -73,10 +73,10 @@ class TicTacTac:
 
         self.switch_player()
 
-    def is_cell_valid(self, row, column) -> bool:
+    def is_cell_valid(self, row, column):
         return self.score_board[row][column] != GameType.EMPTY
 
-    def mark_cell(self, row, column, player) -> bool:
+    def mark_cell(self, row, column, player):
         self.score_board[row][column] = player
         return True
 

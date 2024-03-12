@@ -17,15 +17,16 @@ class SevenSegment:
 
     def draw_vertical_line_on_the_right(self):
         return """
-                       #
-                       #
-                       #"""
+                    #
+                    #
+                    #"""
 
     def draw_vertical_line_on_both_sides(self):
         return """
-               #     #
-               #     #
-               #     #"""
+#     #
+#     #
+#     #
+#     #"""
 
     def return_vertical_segments(self, left_switch, right_switch):
         if left_switch and right_switch:
@@ -70,3 +71,8 @@ class SevenSegment:
                 self.return_vertical_segments(array[4], array[2]) + "\n" +
                 self.return_horizontal_segments(array[3]))
 
+# if __name__ == "__main__":
+#     seven_segment = SevenSegment()
+#
+#     input_str = input("Enter an 8-digit binary number: ")
+#     print(seven_segment.display_seven_segment(input_str))

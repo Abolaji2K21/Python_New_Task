@@ -3,22 +3,21 @@ import unittest
 from Exception.cell_occupied_exception import CellOccupiedException
 from Exception.invalid_user_ID_exception import InvalidUserIDException
 from Exception.null_game_type_exception import NullGameTypeException
-from tic_tac_toe_sector.gametype import GameType
+from tic_tac_toe_sector.game_type import GameType
 from tic_tac_toe_sector.user import User
 from tic_tac_toe_sector.tic_tac_toe import TicTacTac
 
 
 class MyTestCase(unittest.TestCase):
-    def setUp(self):
+    # def setUp(self):
+    #     self.player1 = User(1, 1)
+    #     self.player2 = User(2, 2)
+    #     self.my_game = TicTacTac(self.player1, self.player2)
+
+    def test_that_creation_of_tic_tac_toe_game_with_2_player_is_valid(self):
         self.player1 = User(1, 1)
         self.player2 = User(2, 2)
         self.my_game = TicTacTac(self.player1, self.player2)
-
-    def test_that_creation_of_tic_tac_toe_game_with_2_player_is_valid(self):
-        # player1 = User(1, 1)
-        # player2 = User(2, 2)
-        #
-        # my_game = TicTacTac(player1, player2)
         self.assertListEqual([self.player1, self.player2], self.my_game.get_players())
 
     def test_to_ensure_that_the_game_has_a_score_board_that_is_initialized_correctly_with_an_empty(self):
@@ -31,10 +30,10 @@ class MyTestCase(unittest.TestCase):
                               [GameType.EMPTY, GameType.EMPTY, GameType.EMPTY]], my_game.get_score_board())
 
     def test_that_i_can_get_current_player(self):
-        # player1 = User(1, 1)
-        # player2 = User(2, 2)
-        #
-        # my_game = TicTacTac(player1, player2)
+        self.player1 = User(1, 1)
+        self.player2 = User(2, 2)
+        self.my_game = TicTacTac(self.player1, self.player2)
+
         self.assertListEqual([self.player1, self.player2], self.my_game.get_players())
         self.assertListEqual([[GameType.EMPTY, GameType.EMPTY, GameType.EMPTY],
                               [GameType.EMPTY, GameType.EMPTY, GameType.EMPTY],
@@ -69,21 +68,36 @@ class MyTestCase(unittest.TestCase):
             self.player2 = User(-1, 2)
 
     def test_negative_row_value_exception(self):
+        self.player1 = User(1, 1)
+        self.player2 = User(2, 2)
+        self.my_game = TicTacTac(self.player1, self.player2)
         with self.assertRaises(IndexError):
             self.my_game.make_move(-1, 0)
 
     def test_negative_column_value_exception(self):
+        self.player1 = User(1, 1)
+        self.player2 = User(2, 2)
+        self.my_game = TicTacTac(self.player1, self.player2)
         with self.assertRaises(IndexError):
             self.my_game.make_move(1, -3)
 
     def test_negative_diagonal_value_exception(self):
+        self.player1 = User(1, 1)
+        self.player2 = User(2, 2)
+        self.my_game = TicTacTac(self.player1, self.player2)
         with self.assertRaises(IndexError):
             self.my_game.make_move(1, -1)
 
     def test_positive_row_value_exception_can_not_be_greater_than_three(self):
+        self.player1 = User(1, 1)
+        self.player2 = User(2, 2)
+        self.my_game = TicTacTac(self.player1, self.player2)
         with self.assertRaises(IndexError):
             self.my_game.make_move(4, 2)
 
     def test_positive_column_value_exception_can_not_be_greater_than_three(self):
+        self.player1 = User(1, 1)
+        self.player2 = User(2, 2)
+        self.my_game = TicTacTac(self.player1, self.player2)
         with self.assertRaises(IndexError):
             self.my_game.make_move(2, 3)

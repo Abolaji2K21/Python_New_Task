@@ -1,6 +1,6 @@
 from Exception.invalid_user_ID_exception import InvalidUserIDException
 from Exception.null_game_type_exception import NullGameTypeException
-from tic_tac_toe_sector.gametype import GameType
+from tic_tac_toe_sector.game_type import GameType
 
 
 class User:
@@ -18,5 +18,6 @@ class User:
     def get_game_type(self):
         return self.game_type
 
-    def play_game(self, row: str, column: str):
-        pass
+    def play_game(self, my_tic_tac_toe, row: str, column: str):
+        my_tic_tac_toe.make_move(row, column)
+

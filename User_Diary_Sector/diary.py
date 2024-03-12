@@ -20,29 +20,29 @@ class Diary:
     def get_password(self) -> str:
         return self.password
 
-    def is_locked(self) -> bool:
+    def is_locked(self):
         return self.locked
 
-    def get_number_of_entries(self) -> int:
+    def get_number_of_entries(self):
         return len(self.entries)
 
-    def lock_diary(self, password: str) -> None:
+    def lock_diary(self, password: str):
         if self.password != password:
             raise ValueError("Incorrect password.")
         self.locked = True
 
-    def unlock_diary(self, password: str) -> None:
+    def unlock_diary(self, password: str):
         if self.password != password:
             raise InvalidPinException("Incorrect password.")
         self.locked = False
 
-    def create_entry(self, entry_id: int, title: str, body: str) -> None:
+    def create_entry(self, entry_id: int, title: str, body: str):
         if self.locked:
             raise ValueError("Diary is locked. Cannot add entry.")
         new_entry = Entry(entry_id, title, body)
         self.entries.append(new_entry)
 
-    def find_entry_by_id(self, entry_id: int) -> Entry:
+    def find_entry_by_id(self, entry_id: int):
         if self.locked:
             raise ValueError("Diary is locked. Cannot search for entry.")
         for entry in self.entries:
@@ -50,7 +50,7 @@ class Diary:
                 return entry
         raise ValueError(f"Entry with id {entry_id} not found.")
 
-    def delete_entry(self, entry_id: int) -> None:
+    def delete_entry(self, entry_id: int):
         if self.locked:
             raise ValueError("Diary is locked. Cannot delete entry.")
         for entry in self.entries:
@@ -59,7 +59,7 @@ class Diary:
                 return
         raise ValueError(f"Entry with id {entry_id} not found.")
 
-    def update_entry(self, entry_id: int, title: str, body: str) -> None:
+    def update_entry(self, entry_id: int, title: str, body: str):
         if self.locked:
             raise ValueError("Diary is locked. Cannot update entry.")
         entry_to_update = self.find_entry_by_id(entry_id)

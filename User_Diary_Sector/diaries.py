@@ -5,15 +5,15 @@ class Diaries:
     def __init__(self):
         self.diaries = []
 
-    def get_number_of_diaries(self) -> int:
+    def get_number_of_diaries(self):
         diaries_count = len(self.diaries)
         return diaries_count
 
-    def add_diary(self, username: str, password: str) -> None:
+    def add_diary(self, username: str, password: str):
         my_diary = Diary(username, password)
         self.diaries.append(my_diary)
 
-    def delete_diary(self, username: str, password: str) -> None:
+    def delete_diary(self, username: str, password: str):
         self.diaries = [my_diary for my_diary in self.diaries
                         if my_diary.get_username() != username or my_diary.get_password() != password]
 
@@ -21,4 +21,4 @@ class Diaries:
         for my_diary in self.diaries:
             if my_diary.get_username() == username:
                 return my_diary
-        return None
+        raise ValueError(f"Username {username} not found.")
