@@ -10,35 +10,32 @@ class SevenSegment:
         return "# # # #"
 
     def draw_vertical_line_on_the_left(self):
-        return """
-               #
-               #
-               #"""
+        return """#
+#
+#"""
 
     def draw_vertical_line_on_the_right(self):
-        return """
-                    #
-                    #
-                    #"""
+        return """     #
+     #
+     #"""
 
     def draw_vertical_line_on_both_sides(self):
-        return """
-#     #
+        return """#     #
 #     #
 #     #
 #     #"""
 
     def return_vertical_segments(self, left_switch, right_switch):
         if left_switch and right_switch:
-            return self.draw_vertical_line_on_both_sides()
+            return self.draw_vertical_line_on_both_sides() + "\n"
         elif not left_switch and right_switch:
-            return self.draw_vertical_line_on_the_right()
+            return self.draw_vertical_line_on_the_right() + "\n"
         else:
-            return self.draw_vertical_line_on_the_left()
+            return self.draw_vertical_line_on_the_left() + "\n"
 
     def return_horizontal_segments(self, top_switch):
         if top_switch:
-            return self.draw_horizontal_line()
+            return self.draw_horizontal_line() + "\n"
         else:
             return ""
 
@@ -65,14 +62,15 @@ class SevenSegment:
         if not array[7]:
             return ""
 
-        return (self.return_horizontal_segments(array[0]) + "\n" +
-                self.return_vertical_segments(array[5], array[1]) + "\n" +
-                self.return_horizontal_segments(array[6]) + "\n" +
-                self.return_vertical_segments(array[4], array[2]) + "\n" +
+        return (self.return_horizontal_segments(array[0]) +
+                self.return_vertical_segments(array[5], array[1]) +
+                self.return_horizontal_segments(array[6]) +
+                self.return_vertical_segments(array[4], array[2]) +
                 self.return_horizontal_segments(array[3]))
 
-# if __name__ == "__main__":
-#     seven_segment = SevenSegment()
-#
-#     input_str = input("Enter an 8-digit binary number: ")
-#     print(seven_segment.display_seven_segment(input_str))
+
+if __name__ == "__main__":
+    seven_segment = SevenSegment()
+
+    input_str = input("Enter an 8-digit binary number: ")
+    print(seven_segment.display_seven_segment(input_str))
