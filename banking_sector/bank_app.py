@@ -1,116 +1,151 @@
-from banking_sector.bank import Bank
-from Exception.account_not_found_exception import AccountNotFoundException
+import sys
+
 from Exception.insufficient_funds_exception import InsufficientFundsException
 from Exception.invalid_amount_exception import InvalidAmountException
 from Exception.invalid_pin_exception import InvalidPinException
 
+from Exception.account_not_found_exception import AccountNotFoundException
+from banking_sector.bank import Bank
 
-class BankApp:
-    def __init__(self):
-        self.bank = Bank("firstBank")
-
-    def display(self):
-        print("")
-        print("Bank App")
-        print("1.Create customer\n2.Deposit \n3.Transfer \n4.Withdraw\n5.Check balance "
-              "\n6.Close Account \n7.Exit App")
-        print("---------------------->")
-        choice = input("Enter your choice: ")
-
-        if choice == "1":
-            self.create_account()
-        elif choice == "2":
-            self.deposit()
-        elif choice == "3":
-            self.transfer()
-        elif choice == "4":
-            self.withdraw()
-        elif choice == "5":
-            self.check_balance()
-        elif choice == "6":
-            self.close_account()
-        elif choice == "7":
-            self.exit()
-        else:
-            print("Enter valid choice")
-            self.display()
-
-    def create_account(self):
-        first_name = input("Enter first name: ")
-        last_name = input("Enter last name: ")
-        pin = input("Enter pin: ")
-        account = self.bank.register_customer(first_name, last_name, pin)
-        print("Customer registered successfully!")
-        print("Account Number: ", account.get_account_number())
-
-        self.display()
-
-    def deposit(self):
-        account_number = input("Enter your account number: ")
-        amount = float(input("Enter an amount to deposit: "))
-        try:
-            self.bank.deposit(account_number, amount)
-        except AccountNotFoundException as e:
-            print(e)
-        finally:
-            self.display()
-
-    def transfer(self):
-        sender_account = input("Enter your account number: ")
-        receiver_account = input("Enter the receiver account number: ")
-        amount = float(input("Enter transfer amount: "))
-        pin = input("Enter your pin: ")
-        try:
-            self.bank.transfer(amount, sender_account, receiver_account, pin)
-            print("Amount transferred successfully!")
-        except (InsufficientFundsException, AccountNotFoundException, InvalidPinException) as e:
-            print(e)
-        finally:
-            self.display()
-
-    def withdraw(self):
-        account_number = input("Enter your account number: ")
-        amount = float(input("Enter the amount to withdraw: "))
-        pin = input("Enter your pin: ")
-        try:
-            self.bank.withdraw(account_number, amount, pin)
-            print("Amount withdrawn successfully!")
-        except (InvalidAmountException, InvalidPinException, InsufficientFundsException, AccountNotFoundException) as e:
-            print(e)
-        finally:
-            self.display()
-
-    def check_balance(self):
-        account_number = input("Enter your account number: ")
-        pin = input("Enter your pin: ")
-        try:
-            balance = self.bank.check_balance(account_number, pin)
-            print("Your balance is:", balance)
-        except (InvalidPinException, AccountNotFoundException) as e:
-            print(e)
-        finally:
-            self.display()
-
-    def close_account(self):
-        account_number = input("Enter your account number: ")
-        pin = input("Enter your pin: ")
-        try:
-            self.bank.remove_account(account_number, pin)
-            print("Account closed successfully!")
-        except (InvalidPinException, AccountNotFoundException) as e:
-            print(e)
-        finally:
-            self.display()
-
-    @staticmethod
-    def exit():
-        print("Exit")
+bank = Bank("Bee_Jay App")
 
 
-def main():
-    bank_app = BankApp()
-    bank_app.display()
+def main_menu():
+    try:
+        print(f"""
+                           Welcome To {bank.name}!
+                           1-> Register Account
+                           2-> Deposit
+                           3-> Withdraw
+                           4-> Transfer
+                           5-> Check Balance
+                           6-> Exit App
+                           """)
+
+        user_input = int(input("Select an option: "))
+        match user_input:
+            case 1:
+                register_account()
+
+            case 2:
+                deposit()
+
+            case 3:
+                withdraw()
+
+            case 4:
+                transfer()
+
+            case 5:
+                check_balance()
+
+            case 6:
+                print(f"Thank you for banking with us at {bank.name}")
+                sys.exit()
+
+            case _:
+                main_menu()
+    except ValueError:
+        print("LOL KEEP TRYING @@@")
+        main_menu()
 
 
-if __name__ == "__main__":
-    main()
+def register_account():
+    try:
+        first_name = input("Please enter your firstname: ")
+        last_name = input("Please enter your lastname: ")
+        pin = input("Please enter 4 character pin: ")
+        account = bank.register_customer(first_name, last_name, pin)
+        print("\n")
+        print("*****Account Registered Successfully*****\n")
+        print(f"Hello {first_name} {last_name} your account number is {account.get_account_number()}")
+    except InvalidPinException as e:
+        print(e)
+    finally:
+        main_menu()
+
+
+def deposit():
+    print("DEPOSIT MONEY\n")
+    account_number = int(input("Enter Account Number to deposit into: "))
+    amount = int(input("Enter amount you will like to deposit: "))
+    try:
+        bank.deposit(amount, account_number)
+        print("***Amount deposited Successfully***\n")
+    except InsufficientFundsException as e:
+        print(e)
+    except InvalidPinException as e:
+        print(e)
+    except ValueError:
+        print("Enter valid input ")
+    except AccountNotFoundException as e:
+        print(e)
+    finally:
+        print("\n")
+        main_menu()
+
+
+def withdraw():
+    print("WITHDRAW MONEY")
+    amount = int(input("Enter Amount you'd like to withdraw: "))
+    account_number = int(input("Enter your account number: "))
+    pin = input("Enter 4 character pin: ")
+
+    try:
+        bank.withdraw(amount, account_number, pin)
+        print(f"*****{amount} withdrawn Successfully!*****")
+    except InsufficientFundsException as e:
+        print(e)
+    except InvalidPinException as e:
+        print(e)
+    except ValueError:
+        print("Enter valid input ")
+    except AccountNotFoundException as e:
+        print(e)
+    finally:
+        print("\n")
+        main_menu()
+
+
+def transfer():
+    sender = int(input("Enter Account number of the sender: "))
+    receiver = int(input("Enter Account number of receiver: "))
+    amount = int(input("Enter amount to transfer: "))
+    pin = input("Enter your pin: ")
+
+    try:
+        bank.transfer(sender, receiver, amount, pin)
+        print(f"*****{amount} transferred successfully from {sender} to {receiver}*****")
+    except InsufficientFundsException as e:
+        print(e)
+    except InvalidPinException as e:
+        print(e)
+    except ValueError:
+        print("Enter valid input ")
+    except AccountNotFoundException as e:
+        print(e)
+    finally:
+        main_menu()
+
+
+def check_balance():
+    print("BALANCE")
+    account_number = int(input("Enter Account Number: "))
+    pin = input("Enter pin: ")
+
+    try:
+        balance = bank.check_balance(account_number, pin)
+        print(f"Your Account balance is {balance}")
+    except InsufficientFundsException as e:
+        print(e)
+    except InvalidPinException as e:
+        print(e)
+    except ValueError:
+        print("Enter valid input ")
+    except AccountNotFoundException as e:
+        print(e)
+    finally:
+        main_menu()
+
+
+main_menu()

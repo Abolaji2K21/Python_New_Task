@@ -1,4 +1,7 @@
 import unittest
+
+from Exception.insufficient_funds_exception import InsufficientFundsException
+from Exception.invalid_amount_exception import InvalidAmountException
 from banking_sector.bank import Bank
 from Exception.account_not_found_exception import AccountNotFoundException
 from Exception.invalid_pin_exception import InvalidPinException
@@ -6,65 +9,80 @@ from Exception.invalid_pin_exception import InvalidPinException
 
 class TestBank(unittest.TestCase):
 
-    def test_registration_of_more_than_two_customers(self):
-        bank = Bank("Bee_jayBank")
-        my_account = bank.register_customer("Am", "Tired", "1234")
-        my_account1 = bank.register_customer("Am", "Frustrated", "4321")
-        my_account2 = bank.register_customer("Am", "Angry", "2356")
+    def setUp(self):
+        self.bank = Bank("Bee_jayBank")
 
-        self.assertEqual(3, len(bank.get_accounts()))
+    def tearDown(self):
+        self.bank.accounts.clear()
 
-    def test_register_customer(self):
-        bank = Bank("Bee_jayBank")
-        my_account = bank.register_customer("Am", "Tired", "1234")
-        self.assertEqual("Am Tired", my_account.full_name())  # Corrected method call
+    def testBankCanDepositIntoCustomersAccount(self):
+        account = self.bank.register_customer("Moh", "baba", "1234")
+        self.bank.deposit(2_000, 1000)
+        self.assertEqual(2_000, self.bank.check_balance(1000, "1234"))
 
-    def test_that_after_registration_you_can_delete_an_account(self):
-        bank = Bank("Bee_jayBank")
-        my_account = bank.register_customer("Am", "Tired", "1234")
-        my_account1 = bank.register_customer("Am", "Frustrated", "4321")
-        my_account2 = bank.register_customer("Am", "Angry", "2356")
+    def testBankCanWithdrawFromCustomersAccount(self):
+        self.bank.register_customer("Bee_Jay", "Iam", "1234")
 
-        bank.remove_account(my_account1.get_account_number(), "4321")
+        self.bank.deposit(10_000, 1000)
+        self.bank.withdraw(5000, 1000, "1234")
+        self.assertEqual(5000, self.bank.check_balance(1000, "1234"))
 
-        self.assertEqual(2, len(bank.get_accounts()))
+    def testDepositNegativeAmount_ThrowExceptionTest(self):
+        self.bank.register_customer("Bee_Jay", "Iam", "1234")
+        with self.assertRaises(InvalidAmountException):
+            self.bank.deposit(-2000, 1000)
 
-    def test_that_after_registration_you_can_delete_an_account_twice(self):
-        bank = Bank("Bee_jayBank")
-        my_account = bank.register_customer("Am", "Tired", "1234")
-        my_account1 = bank.register_customer("Am", "Frustrated", "4321")
-        my_account2 = bank.register_customer("Am", "Angry", "2356")
+    def testWithdrawNegativeAmount_ThrowExceptionTest(self):
+        self.bank.register_customer("Bee_Jay", "Iam", "1234")
+        with self.assertRaises(InsufficientFundsException):
+            self.bank.withdraw(-2000, 1000, "1234")
 
-        bank.remove_account(my_account1.get_account_number(), "4321")
-        bank.remove_account(my_account.get_account_number(), "1234")  # Corrected method and attribute access
+    def testWithdrawAmountWithIncorrectPin_ThrowExceptionTest(self):
+        self.bank.register_customer("Moh", "baba", "1234")
+        with self.assertRaises(InvalidPinException):
+            self.bank.withdraw(-2000, 1000, "1274")
 
-        self.assertEqual(1, len(bank.get_accounts()))
+    def testTransferMoneyFromAccountToAccount(self):
+        self.bank.register_customer("Bee_Jay", "Iam", "1234")
+        self.bank.deposit(5000, 1000)
+        self.bank.register_customer("First", "last", "5678")
+        self.bank.transfer(1000, 1001, 2000, "1234")
+        self.assertEqual(2000, self.bank.check_balance(1001, "5678"))
 
-    def test_that_after_registration_you_can_not_delete_an_account_after_a_wrong_pin(self):
-        bank = Bank("Bee_jayBank")
-        my_account = bank.register_customer("Am", "Tired", "1234")
+    def testTransferNegativeMoneyFromAccountToAccount(self):
+        self.bank.register_customer("Bee_Jay", "Iam", "1234")
+        self.bank.deposit(5000, 1000)
+        self.bank.register_customer("First", "last", "5678")
+        with self.assertRaises(InsufficientFundsException):
+            self.bank.transfer(1000, 1001, -2000, "1234")
 
-        bank.remove_account(my_account.get_account_number(), "1345")  # Corrected method and attribute access
-        self.assertEqual(1, len(bank.get_accounts()))
+    def testRemoveAccountFromListOfAccountsTest(self):
+        self.bank.register_customer("Bee_Jay", "Iam", "1234")
+        self.bank.register_customer("First", "last", "5678")
+        self.bank.remove(1000, "1234")
+        self.assertEqual(1, self.bank.number_of_customers())
 
-    def test_that_you_can_deposit(self):
-        bank = Bank("Bee_jayBank")
-        my_account = bank.register_customer("Am", "Tired", "1234")
-        account_number = my_account.get_account_number()  # Corrected method access
+    def testFindAccountReturnsAccount(self):
+        self.bank.register_customer("Bee_Jay", "Iam", "1234")
+        self.assertIsNotNone(self.bank.find_account(1000))
 
-        bank.deposit(account_number, 1000)
-        self.assertEqual(1000, my_account.get_balance("1234"))
-
-    def test_that_you_can_deposit_twice(self):
-        bank = Bank("Bee_jayBank")
-        my_account = bank.register_customer("Am", "Tired", "1234")
-        account_number = my_account.get_account_number()  # Corrected method access
-
-        bank.deposit(account_number, 1000)
-        bank.deposit(account_number, 1000)
-        self.assertEqual(2000, my_account.get_balance("1234"))
-
-    def test_deposit_raises_account_not_found_exception(self):
-        bank = Bank("Bee_jayBank")
+    def testFindUnexistingAccount_RaiseException(self):
+        self.bank.register_customer("Bee_Jay", "Iam", "1234")
         with self.assertRaises(AccountNotFoundException):
-            bank.deposit(123, 1000)
+            self.bank.find_account(32232)
+
+    def testDepositIntoAnAccountThatDoesntExist_ThrowsAccountNotFoundError(self):
+        self.bank.register_customer("Bee_Jay", "Iam", "1234")
+        with self.assertRaises(AccountNotFoundException):
+            self.bank.deposit(29292, 32232)
+
+    def testWithdrawFromAnAccountThatDoesntExist_ThrowsAccountNotFoundError(self):
+        with self.assertRaises(AccountNotFoundException):
+            self.bank.withdraw(29292, 32232, "1234")
+
+    def testRemoveAccount_TestIfAccountStillExistsAfterRemoving(self):
+        self.bank.register_customer("Bee_Jay", "Iam", "1234")
+        self.bank.register_customer("First", "last", "5678")
+        self.bank.remove(1001, "5678")
+        with self.assertRaises(AccountNotFoundException):
+            self.bank.withdraw(29292, 1001, "5678")

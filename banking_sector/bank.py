@@ -1,77 +1,58 @@
-from banking_sector.account_One import Account
 from Exception.account_not_found_exception import AccountNotFoundException
-from Exception.insufficient_funds_exception import InsufficientFundsException
-from Exception.invalid_amount_exception import InvalidAmountException
+from banking_sector.account_One import Account
 from Exception.invalid_pin_exception import InvalidPinException
 
 
 class Bank:
+    accounts = []
+
     def __init__(self, name):
         self.name = name
-        self.accounts = []
+
+    def deposit(self, amount, account_number):
+        account = self.find_account(account_number)
+        account.deposit(amount)
 
     def find_account(self, account_number):
-        for my_account in self.accounts:
-            if my_account.account_number() == account_number:
-                return my_account
-        raise AccountNotFoundException("Account not found")
-
-    def deposit(self, account_number, amount):
-        try:
-            my_account = self.find_account(account_number)
-            my_account.deposit(amount)
-        except AccountNotFoundException as e:
-            raise e
-
-    def withdraw(self, account_number, amount, pin):
-        try:
-            my_account = self.find_account(account_number)
-            my_account.withdraw(amount, pin)
-        except AccountNotFoundException as e:
-            raise e
-        except (InvalidAmountException, InvalidPinException, InsufficientFundsException) as e:
-            raise e
-
-    def transfer(self, amount, from_account_number, to_account_number, pin):
-        try:
-            source_account = self.find_account(from_account_number)
-            destination_account = self.find_account(to_account_number)
-            source_account.withdraw(amount, pin)
-            destination_account.deposit(amount)
-        except AccountNotFoundException as e:
-            raise e
-        except (InvalidAmountException, InvalidPinException, InsufficientFundsException) as e:
-            raise e
+        for account in self.accounts:
+            if account.get_account_number() == account_number:
+                return account
+        raise AccountNotFoundException("Account cannot be found")
 
     def check_balance(self, account_number, pin):
-        try:
-            my_account = self.find_account(account_number)
-            if my_account.validate_pin(pin):
-                return my_account.get_balance()
-        except AccountNotFoundException as e:
-            raise e
-        except InvalidPinException as e:
-            raise e
+        account = self.find_account(account_number)
+        return account.check_balance(pin)
 
     def register_customer(self, first_name, last_name, pin):
-        account_number = self.generate_account_number()
-        my_account = Account(first_name + " " + last_name, pin, account_number)
-        self.accounts.append(my_account)
-        return my_account
-
-    def remove_account(self, account_number, pin):
-        try:
-            my_account = self.find_account(account_number)
-            if my_account.validate_pin(pin):
-                self.accounts.remove(my_account)
-        except AccountNotFoundException as e:
-            raise e
-        except InvalidPinException as e:
-            raise e
+        name = first_name + " " + last_name
+        account = Account(name, pin, self.generate_account_number())
+        self.accounts.append(account)
+        return account
 
     def generate_account_number(self):
-        self.counter += 1
-        return self.counter
+        return len(self.accounts) + 1000
+
+    def withdraw(self, amount, account_number, pin):
+        account = self.find_account(account_number)
+        account.withdraw(amount, pin)
+
+    def transfer(self, sender_account_number, receiver_account_number, amount, pin):
+        self.verify_pin(sender_account_number, pin)
+        self.withdraw(amount, sender_account_number, pin)
+        self.deposit(amount, receiver_account_number)
+
+    def remove(self, account_number, pin):
+        self.verify_pin(account_number, pin)
+        account = self.find_account(account_number)
+        self.accounts.remove(account)
+
+    def verify_pin(self, account_number, pin):
+        if not self.is_pin_correct(account_number, pin):
+            raise InvalidPinException("Incorrect pin entered")
+
+    def is_pin_correct(self, account_number, pin):
+        account = self.find_account(account_number)
+        return account.pin == pin
 
     def number_of_customers(self):
         return len(self.accounts)
